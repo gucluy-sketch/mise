@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import {
   StyleSheet, Text, View, ScrollView, TouchableOpacity,
-  Image, SafeAreaView, Platform, Dimensions
+  Image, SafeAreaView, Dimensions
 } from 'react-native';
 
 const W = Dimensions.get('window').width;
@@ -11,91 +11,102 @@ const W = Dimensions.get('window').width;
 const TARIFLER = [
   {
     id: 1,
-    isim: 'Risotto alla Milanese',
-    mutfak: 'İtalyan',
-    sure: '35 dk',
+    isim: 'Hünkar Beğendi',
+    mutfak: 'Osmanlı',
+    sure: '75 dk',
     zorluk: 'Orta',
-    gorsel: 'https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=800&q=80',
-    hikaye: 'Milano\'nun sarı altını. 1574\'te bir ustanın çırağı, caminin inşaatında kullandığı safran boyasını yemekle şakalaşarak karıştırdı — ve ortaya çıkan renk o kadar güzeldi ki tarih oldu. Risotto alla Milanese, İtalya\'nın en ikonik kazasının meyvesidir.',
+    gorsel: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=800&q=80',
+    hikaye: 'Yıl 1869. Mısır Hidivi\'nin daveti üzerine İstanbul\'a gelen Fransız İmparatoriçe Eugénie, Dolmabahçe Sarayı\'nda Sultan Abdülaziz\'in sofrasına oturur. O gece sunulan kuzu yahnili patlıcan püresi İmparatoriçe\'yi öyle büyüler ki tarifi ısrarla ister. Saray aşçısı tarifi vermez — saray sırrıdır. Yemeğin adı da o geceden kalır: Hünkar Beğendi. Hükümdarın beğendiği. Bir imparatoriçeyi hayran bırakan, bir sultanın sofrasından dünya mutfağına açılan köprü.',
     malzemeler: [
-      { isim: 'Arborio pirinci', miktar: 300, birim: 'g' },
-      { isim: 'Kemik suyu (sıcak)', miktar: 1200, birim: 'ml' },
-      { isim: 'Kuru beyaz şarap', miktar: 120, birim: 'ml' },
-      { isim: 'Safran', miktar: 0.5, birim: 'tsp' },
-      { isim: 'Soğan', miktar: 1, birim: 'adet' },
-      { isim: 'Tereyağı', miktar: 60, birim: 'g' },
-      { isim: 'Parmesan', miktar: 80, birim: 'g' },
+      { isim: 'Kuzu but (küp doğranmış)', miktar: 800, birim: 'g' },
+      { isim: 'Soğan', miktar: 2, birim: 'adet' },
+      { isim: 'Domates (rendelenmiş)', miktar: 3, birim: 'adet' },
+      { isim: 'Sarımsak', miktar: 4, birim: 'diş' },
+      { isim: 'Tereyağı', miktar: 40, birim: 'g' },
+      { isim: 'Zeytinyağı', miktar: 2, birim: 'tbsp' },
+      { isim: 'Defne yaprağı', miktar: 2, birim: 'adet' },
+      { isim: 'Kekik', miktar: 1, birim: 'tsp' },
+      { isim: 'Patlıcan (büyük)', miktar: 4, birim: 'adet' },
+      { isim: 'Tereyağı (beşamel)', miktar: 60, birim: 'g' },
+      { isim: 'Un (beşamel)', miktar: 3, birim: 'tbsp' },
+      { isim: 'Süt (ılık)', miktar: 400, birim: 'ml' },
+      { isim: 'Kaşar peyniri (rendelenmiş)', miktar: 100, birim: 'g' },
+      { isim: 'Muskat rendesi', miktar: 0.25, birim: 'tsp' },
     ],
     adimlar: [
-      'Safranı 3 yemek kaşığı ılık kemik suyuna ekle, 10 dk beklet.',
-      'Soğanı ince doğra, yarım tereyağıyla orta ateşte şeffaflaşana dek sotele (5-7 dk).',
-      'Pirinci ekle, 2 dk kavur — her tane yağla kaplanmalı.',
-      'Şarabı ekle, tamamen çekilene dek karıştır.',
-      'Kepçe kepçe sıcak kemik suyu ekle; her seferinde iyice karıştır ve çekilmesini bekle.',
-      'Safranı 15. dakikada ekle. Toplam pişirme süresi 18-20 dk olmalı.',
-      'Ocaktan al, kalan tereyağı ve parmesanı ekle. 2 dk dinlendir.',
+      'Kuzuyu tuz ve karabiberle tatlandır. Zeytinyağında yüksek ateşte her tarafını mühürle, kenara al.',
+      'Aynı tencerede soğanı kavur. Sarımsak ve domatesi ekle, 5 dk pişir.',
+      'Eti geri ekle, defne ve kekiği koy. Üstünü geçecek kadar su ekle.',
+      'Kısık ateşte 50-60 dk, et düşene kadar pişir.',
+      'Patlıcanları açık ateşte veya fırın ızgarasında yakarak közle — deri tamamen siyahlaşmalı.',
+      'Közlenmiş patlıcanları naylon poşette 10 dk beklet, derilerini soy. Suyunu süz.',
+      'Beşamel: tereyağını eritin, unu ekleyip 2 dk kavurun. Ilık sütü yavaş yavaş ekleyerek çırpın.',
+      'Patlıcanı beşamele ekleyip tahta kaşıkla ezin. Peynir ve muskatı katın, tuz ayarlayın.',
+      'Servis: geniş tabağa patlıcan püresi yay, üstüne kuzu yahnisi koy.',
     ],
-    teknik: 'Mantecatura — risottoya kremsi dokuyu veren son adım. Ocaktan aldıktan sonra soğuk tereyağı ve peyniri ekleyip güçlü bir hareketle karıştırmak, nişastayı emülsifiye eder. Asla ocak üzerinde yapma.',
-    besin: { kalori: 420, protein: 14, karbonhidrat: 58, yag: 16 },
+    teknik: 'Közleme — Hünkar Beğendi\'nin ruhunu veren işlem. Patlıcanı sadece fırında pişirmek değil, YAKMAK gerekir. Dışı tamamen kömürleşmeli. Bu yanık deri, içerideki ete dumanlı, derin bir aroma verir. Poşette bekletmek soyma işlemini kolaylaştırır ve o son damlacık dumanlı suyu da içerde tutar.',
+    besin: { kalori: 520, protein: 38, karbonhidrat: 22, yag: 32 },
   },
   {
     id: 2,
-    isim: 'Beef Bourguignon',
-    mutfak: 'Fransız',
-    sure: '3 saat',
-    zorluk: 'İleri',
-    gorsel: 'https://images.unsplash.com/photo-1534939561126-855b8675edd7?w=800&q=80',
-    hikaye: 'Fransız köylüsünün mutfağından dünya masalarına uzanan yolculuk. Burgundy şarabı, sert ve ucuz etin bağ dokusunu parçalar; kollajen jelatin\'e dönüşür ve ortaya çıkan sos hem hafif hem de derin olur. Julia Child bu yemeği Amerika\'ya tanıttı, ama asıl sahibi Fransız toprağıdır.',
+    isim: 'İmam Bayıldı',
+    mutfak: 'Osmanlı',
+    sure: '60 dk',
+    zorluk: 'Kolay',
+    gorsel: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=800&q=80',
+    hikaye: 'Bir imam varmış. Sofrasına bu yemek geldiğinde bayılmış. Neden bayıldı? İki rivayet çarpışır tarih boyunca. Birinci rivayet romantik: yemeğin lezzeti o kadar muhteşemmiş ki imam kendinden geçmiş. İkinci rivayet acı: zeytinyağının masrafını duyunca cüzdanı için bayılmış. Hangisi doğru? Muhtemelen ikisi de. Çünkü İmam Bayıldı hem inanılmaz lezzetli hem de inanılmaz cömert bir yemektir — içindeki zeytinyağını esirgemezseniz.',
     malzemeler: [
-      { isim: 'Dana güveclik (küp)', miktar: 1200, birim: 'g' },
-      { isim: 'Kırmızı Burgundy şarabı', miktar: 750, birim: 'ml' },
-      { isim: 'Dana kemik suyu', miktar: 500, birim: 'ml' },
-      { isim: 'Havuç', miktar: 200, birim: 'g' },
-      { isim: 'İnci soğan', miktar: 200, birim: 'g' },
-      { isim: 'Mantar', miktar: 250, birim: 'g' },
-      { isim: 'Pastırma (lardons)', miktar: 150, birim: 'g' },
-      { isim: 'Sarımsak', miktar: 4, birim: 'diş' },
-      { isim: 'Domates salçası', miktar: 2, birim: 'tbsp' },
+      { isim: 'Patlıcan (orta boy)', miktar: 4, birim: 'adet' },
+      { isim: 'Soğan (ince yarım ay)', miktar: 3, birim: 'adet' },
+      { isim: 'Sarımsak', miktar: 6, birim: 'diş' },
+      { isim: 'Domates (küp doğranmış)', miktar: 4, birim: 'adet' },
+      { isim: 'Zeytinyağı', miktar: 150, birim: 'ml' },
+      { isim: 'Maydanoz (ince kıyılmış)', miktar: 1, birim: 'demet' },
+      { isim: 'Şeker', miktar: 1, birim: 'tsp' },
+      { isim: 'Tuz', miktar: 1.5, birim: 'tsp' },
+      { isim: 'Su', miktar: 100, birim: 'ml' },
     ],
     adimlar: [
-      'Eti bir gece şarap, havuç, soğan ve sarımsakla marine et.',
-      'Eti süz, kurula. Pastırmayı render et, kenara al.',
-      'Yüksek ateşte eti her tarafından mühürle — kalabalık tavada yapma.',
-      'Tüm malzemeleri döküm tencereye al, şarap ve suyu ekle.',
-      '160°C fırında 2.5-3 saat pişir — kapak kapalı.',
-      'Sosu süz, tencerede yarıya kadar indirge.',
-      'İnci soğan ve mantarı ayrı tavada sotele, tencereye ekle.',
+      'Patlıcanları boyuna çizgili soy (zebra gibi), tuzlu suda 20 dk beklet. Bol suyla yıka, kurula.',
+      'Her patlıcanın üstüne boyuna derin bir cep aç — dipten ve ucundan kesmeden.',
+      'Soğanı zeytinyağında (50 ml) sarartana dek kavur. Sarımsak ekle, 2 dk daha.',
+      'Domatesi, şekeri ve tuzu ekle. 10 dk pişir, maydanozu koy, ocaktan al.',
+      'İç harcı patlıcan ceplerine doldur, bastır.',
+      'Geniş tencereye diz. Üstüne kalan zeytinyağı ve suyu dök.',
+      'Kısık ateşte kapak kapalı 35-40 dk pişir. Soğuk veya ılık servis et.',
     ],
-    teknik: 'Fond — mühürleme sırasında tavanın dibine yapışan kahverengi katman asla atılmaz. Şarap ekleyip kazıyarak kaldır; bu "déglaçage" tekniği sosun umami derinliğinin yarısını oluşturur.',
-    besin: { kalori: 580, protein: 48, karbonhidrat: 12, yag: 28 },
+    teknik: 'Zeytinyağı miktarı pazarlık konusu değil. 150 ml zeytinyağı görünce "çok fazla" diye azaltmak yemeği mahveder. Zeytinyağlı yemeklerde yağ sadece pişirme aracı değil — sos, taşıyıcı ve koruyucudur. Soğuduğunda yağ yeniden yemeğin içine çekilir ve o kremsi, zengin dokuyu oluşturur. İmam Bayıldı\'nın sırrı burada yatar.',
+    besin: { kalori: 290, protein: 4, karbonhidrat: 18, yag: 24 },
   },
   {
     id: 3,
-    isim: 'Eggs Benedict',
-    mutfak: 'Amerikan',
-    sure: '25 dk',
-    zorluk: 'Orta',
-    gorsel: 'https://images.unsplash.com/photo-1608039829572-78524f79c4c7?w=800&q=80',
-    hikaye: '1894, Delmonico\'s Restaurant, New York. Düzenli müşteri Lemuel Benedict, akşamki içkinin acısını çıkarmak için "tereyağlı tost, çıtır pastırma, poşe yumurta ve Hollandaise sos" istedi. Baş garson o kadar etkilendi ki menüye ekledi. Bir akşamın çaresi sabah klasiği oldu.',
+    isim: 'Keskek',
+    mutfak: 'Anadolu',
+    sure: '5 saat',
+    zorluk: 'İleri',
+    gorsel: 'https://images.unsplash.com/photo-1574484284002-952d92456975?w=800&q=80',
+    hikaye: '2011\'de UNESCO\'nun Somut Olmayan Kültürel Miras Listesi\'ne giren tek Türk yemeği. Ama asıl hikayesi çok daha eskiye gider — MÖ 3000\'lere, Anadolu\'nun ilk tahıl medeniyetlerine. Keskek düğünlerde, cenazede, bayramlarda pişirilir. Sadece bir yemek değil, topluluk eylemidir. Büyük kazanların başında saatlerce tokmaklarla dövülen buğday ve et, köy meydanlarında birlikte yenilir. Yemek bitmeden merasim bitmez.',
     malzemeler: [
-      { isim: 'Yumurta', miktar: 4, birim: 'adet' },
-      { isim: 'İngiliz muffin', miktar: 2, birim: 'adet' },
-      { isim: 'Canadian bacon', miktar: 4, birim: 'dilim' },
-      { isim: 'Beyaz sirke', miktar: 1, birim: 'tbsp' },
-      { isim: 'Yumurta sarısı (sos için)', miktar: 3, birim: 'adet' },
-      { isim: 'Tereyağı (eritilmiş)', miktar: 115, birim: 'g' },
-      { isim: 'Limon suyu', miktar: 1, birim: 'tbsp' },
+      { isim: 'Dövme buğday (bir gece ıslatılmış)', miktar: 500, birim: 'g' },
+      { isim: 'Kuzu but veya kol', miktar: 1000, birim: 'g' },
+      { isim: 'Soğan', miktar: 2, birim: 'adet' },
+      { isim: 'Tereyağı', miktar: 100, birim: 'g' },
+      { isim: 'Tuz', miktar: 2, birim: 'tsp' },
+      { isim: 'Su', miktar: 3, birim: 'l' },
+      { isim: 'Pul biber (üzeri için)', miktar: 1, birim: 'tsp' },
+      { isim: 'Kuru nane (üzeri için)', miktar: 1, birim: 'tsp' },
     ],
     adimlar: [
-      'Hollandaise: sarıları ve limon suyunu bain-marie\'de çırp, hacim iki katına çıkana dek.',
-      'Tereyağını yavaş yavaş damla damla ekle, sürekli çırparak emülsifiye et.',
-      'Poşe için suya sirke ekle, hafif kaynata (kabarcık yok).',
-      'Yumurtayı küçük kaba kır, suya yakın yavaşça bırak. 3 dk pişir.',
-      'Muffinleri kızart, bacon\'ı ısıt.',
-      'Muffin → bacon → yumurta → sos sıralamasıyla servis et.',
+      'Islatılmış buğdayı ve eti büyük tencereye koy. Soğanı bütün ekle, 3 litre su dök.',
+      'Kaynamaya başlayınca köpüğü al. Tuzla, kısık ateşe al.',
+      'En az 3-4 saat, buğday ve et tamamen dağılana kadar pişir. Su azalırsa kaynar su ekle.',
+      'Et kemikten düştüğünde çıkar, kemiklerini ayıkla, eti parçala.',
+      'Ahşap tokmak veya ağır kaşıkla buğdayı döv, eti geri ekle — pürüzsüz, yapışkan bir kıvam hedefliyorsun.',
+      'Geniş servis tabağına al. Ortasına çukur aç.',
+      'Tereyağını kızdır, pul biber ve naneyi ekle. Çukura dök, hemen servis et.',
     ],
-    teknik: 'Bain-marie emülsiyonu — Hollandaise\'in sırrı ısı kontrolüdür. Su 70°C\'yi geçerse yumurta pişer, 60°C\'nin altında kalırsa emülsiyon tutmaz. Parmaklarını kaseye değdir; "tutamıyorum ama sıcak" hissi doğru sıcaklıktır.',
-    besin: { kalori: 490, protein: 22, karbonhidrat: 28, yag: 34 },
+    teknik: 'Dövme tekniği — Santrifüj gibi dönen modern mikserler değil, tekrarlayan darbe hareketi gerekir. Tokmak her vuruşta hem buğdayı ezer hem de gluteni aktive eder — bu, o karakteristik yapışkan, ipeksi dokuyu verir. Sabırsızlanıp blender kullanmak yemeği lapa yapar. Orijinal kıvam için en az 15-20 dakika dövmek şarttır.',
+    besin: { kalori: 610, protein: 45, karbonhidrat: 52, yag: 24 },
   },
 ];
 
@@ -108,34 +119,26 @@ const OLCU_TABLOSU = [
   { malzeme: 'Pirinç', cay_kasigi: 4, yemek_kasigi: 10, tatli_kasigi: 7, cay_bardagi: 70, su_bardagi: 175 },
   { malzeme: 'Nişasta', cay_kasigi: 3, yemek_kasigi: 8, tatli_kasigi: 5, cay_bardagi: 60, su_bardagi: 130 },
   { malzeme: 'Kakao', cay_kasigi: 3, yemek_kasigi: 7, tatli_kasigi: 5, cay_bardagi: 55, su_bardagi: 110 },
+  { malzeme: 'İrmik', cay_kasigi: 4, yemek_kasigi: 11, tatli_kasigi: 7, cay_bardagi: 75, su_bardagi: 170 },
+  { malzeme: 'Yoğurt', cay_kasigi: 8, yemek_kasigi: 20, tatli_kasigi: 14, cay_bardagi: 160, su_bardagi: 240 },
+  { malzeme: 'Pekmez', cay_kasigi: 7, yemek_kasigi: 21, tatli_kasigi: 14, cay_bardagi: null, su_bardagi: 330 },
+  { malzeme: 'Bal', cay_kasigi: 7, yemek_kasigi: 21, tatli_kasigi: 14, cay_bardagi: null, su_bardagi: 340 },
 ];
 
-// ─── RENKLER ─────────────────────────────────────────────────────────────────
-
 const C = {
-  bg: '#0F0E0C',
-  bg2: '#1A1814',
-  bg3: '#252320',
-  accent: '#C9A96E',
-  accentDim: '#8B6F42',
-  text: '#F0EDE8',
-  textMuted: '#8A8680',
-  textDim: '#4A4845',
+  bg: '#0F0E0C', bg2: '#1A1814', bg3: '#252320',
+  accent: '#C9A96E', accentDim: '#8B6F42',
+  text: '#F0EDE8', textMuted: '#8A8680', textDim: '#4A4845',
   border: '#2A2825',
 };
-
-// ─── EKRANLAR ────────────────────────────────────────────────────────────────
 
 function AnaSayfa({ onTarif, onOlcu }) {
   return (
     <ScrollView style={s.scroll} showsVerticalScrollIndicator={false}>
-      {/* Header */}
       <View style={s.header}>
         <Text style={s.logo}>mise</Text>
         <Text style={s.logoAlt}>her şey yerli yerinde</Text>
       </View>
-
-      {/* Öne çıkan */}
       <Text style={s.bolumBaslik}>öne çıkan</Text>
       <TouchableOpacity style={s.featuredCard} onPress={() => onTarif(TARIFLER[0])}>
         <Image source={{ uri: TARIFLER[0].gorsel }} style={s.featuredImg} />
@@ -146,8 +149,6 @@ function AnaSayfa({ onTarif, onOlcu }) {
           <Text style={s.featuredMeta}>{TARIFLER[0].sure} · {TARIFLER[0].zorluk}</Text>
         </View>
       </TouchableOpacity>
-
-      {/* Tarifler */}
       <Text style={s.bolumBaslik}>tarifler</Text>
       {TARIFLER.map(t => (
         <TouchableOpacity key={t.id} style={s.tarifCard} onPress={() => onTarif(t)}>
@@ -160,8 +161,6 @@ function AnaSayfa({ onTarif, onOlcu }) {
           <Text style={s.tarifOk}>›</Text>
         </TouchableOpacity>
       ))}
-
-      {/* Ölçü tablosu */}
       <TouchableOpacity style={s.olcuBanner} onPress={onOlcu}>
         <View>
           <Text style={s.olcuBaslik}>altın standart ölçüler</Text>
@@ -169,7 +168,6 @@ function AnaSayfa({ onTarif, onOlcu }) {
         </View>
         <Text style={s.olcuOk}>›</Text>
       </TouchableOpacity>
-
       <View style={{ height: 40 }} />
     </ScrollView>
   );
@@ -177,11 +175,9 @@ function AnaSayfa({ onTarif, onOlcu }) {
 
 function TarifEkrani({ tarif, onGeri }) {
   const [aktifTab, setAktifTab] = useState('hikaye');
-
   return (
     <View style={{ flex: 1 }}>
       <ScrollView style={s.scroll} showsVerticalScrollIndicator={false}>
-        {/* Görsel */}
         <View style={s.tarifDetayGorsel}>
           <Image source={{ uri: tarif.gorsel }} style={StyleSheet.absoluteFill} />
           <View style={s.tarifDetayOverlay} />
@@ -194,15 +190,8 @@ function TarifEkrani({ tarif, onGeri }) {
             <Text style={s.tarifDetayMeta}>{tarif.sure} · {tarif.zorluk}</Text>
           </View>
         </View>
-
-        {/* Besin */}
         <View style={s.besinRow}>
-          {[
-            ['kalori', tarif.besin.kalori, 'kcal'],
-            ['protein', tarif.besin.protein, 'g'],
-            ['karb', tarif.besin.karbonhidrat, 'g'],
-            ['yağ', tarif.besin.yag, 'g'],
-          ].map(([etiket, deger, birim]) => (
+          {[['kalori', tarif.besin.kalori, 'kcal'], ['protein', tarif.besin.protein, 'g'], ['karb', tarif.besin.karbonhidrat, 'g'], ['yağ', tarif.besin.yag, 'g']].map(([etiket, deger, birim]) => (
             <View key={etiket} style={s.besinKutu}>
               <Text style={s.besinDeger}>{deger}</Text>
               <Text style={s.besinBirim}>{birim}</Text>
@@ -210,8 +199,6 @@ function TarifEkrani({ tarif, onGeri }) {
             </View>
           ))}
         </View>
-
-        {/* Tabs */}
         <View style={s.tabRow}>
           {['hikaye', 'malzemeler', 'yapılış', 'teknik'].map(t => (
             <TouchableOpacity key={t} style={[s.tab, aktifTab === t && s.tabAktif]} onPress={() => setAktifTab(t)}>
@@ -219,49 +206,35 @@ function TarifEkrani({ tarif, onGeri }) {
             </TouchableOpacity>
           ))}
         </View>
-
-        {/* Tab içerikleri */}
         <View style={s.tabIcerik}>
-          {aktifTab === 'hikaye' && (
-            <Text style={s.hikayeMetin}>{tarif.hikaye}</Text>
-          )}
-
+          {aktifTab === 'hikaye' && <Text style={s.hikayeMetin}>{tarif.hikaye}</Text>}
           {aktifTab === 'malzemeler' && (
             <View>
               {tarif.malzemeler.map((m, i) => (
                 <View key={i} style={s.malzemeRow}>
                   <Text style={s.malzemeIsim}>{m.isim}</Text>
-                  <Text style={s.malzemeMiktar}>{m.miktar} {m.birim}</Text>
+                  <Text style={s.malzemeMiktar}>{m.miktar > 0 ? `${m.miktar} ${m.birim}` : m.birim}</Text>
                 </View>
               ))}
             </View>
           )}
-
           {aktifTab === 'yapılış' && (
             <View>
               {tarif.adimlar.map((a, i) => (
                 <View key={i} style={s.adimRow}>
-                  <View style={s.adimNumara}>
-                    <Text style={s.adimNumaraText}>{i + 1}</Text>
-                  </View>
+                  <View style={s.adimNumara}><Text style={s.adimNumaraText}>{i + 1}</Text></View>
                   <Text style={s.adimMetin}>{a}</Text>
                 </View>
               ))}
             </View>
           )}
-
           {aktifTab === 'teknik' && (
             <View style={s.teknikKutu}>
-              <Text style={s.teknikBaslik}>
-                {tarif.teknik.split('—')[0].trim()}
-              </Text>
-              <Text style={s.teknikMetin}>
-                {tarif.teknik.split('—').slice(1).join('—').trim()}
-              </Text>
+              <Text style={s.teknikBaslik}>{tarif.teknik.split('—')[0].trim()}</Text>
+              <Text style={s.teknikMetin}>{tarif.teknik.split('—').slice(1).join('—').trim()}</Text>
             </View>
           )}
         </View>
-
         <View style={{ height: 40 }} />
       </ScrollView>
     </View>
@@ -271,7 +244,6 @@ function TarifEkrani({ tarif, onGeri }) {
 function OlcuEkrani({ onGeri }) {
   const kolonlar = ['çay k.', 'yemek k.', 'tatlı k.', 'çay b.', 'su b.'];
   const degerler = ['cay_kasigi', 'yemek_kasigi', 'tatli_kasigi', 'cay_bardagi', 'su_bardagi'];
-
   return (
     <ScrollView style={s.scroll} showsVerticalScrollIndicator={false}>
       <View style={s.olcuHeader}>
@@ -281,81 +253,51 @@ function OlcuEkrani({ onGeri }) {
         <Text style={s.olcuBaslikBuyuk}>altın standart ölçüler</Text>
         <Text style={s.olcuAciklama}>Tüm değerler gram cinsindendir</Text>
       </View>
-
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <View style={s.tablo}>
-          {/* Başlık satırı */}
           <View style={s.tabloBaslikRow}>
-            <View style={[s.tabloHucre, s.tabloMalzemeHucre]}>
-              <Text style={s.tabloBaslikText}>malzeme</Text>
-            </View>
-            {kolonlar.map(k => (
-              <View key={k} style={s.tabloHucre}>
-                <Text style={s.tabloBaslikText}>{k}</Text>
-              </View>
-            ))}
+            <View style={[s.tabloHucre, s.tabloMalzemeHucre]}><Text style={s.tabloBaslikText}>malzeme</Text></View>
+            {kolonlar.map(k => <View key={k} style={s.tabloHucre}><Text style={s.tabloBaslikText}>{k}</Text></View>)}
           </View>
-          {/* Veri satırları */}
           {OLCU_TABLOSU.map((row, i) => (
             <View key={i} style={[s.tabloRow, i % 2 === 1 && s.tabloRowAlt]}>
-              <View style={[s.tabloHucre, s.tabloMalzemeHucre]}>
-                <Text style={s.tabloMalzemeText}>{row.malzeme}</Text>
-              </View>
-              {degerler.map(d => (
-                <View key={d} style={s.tabloHucre}>
-                  <Text style={s.tabloDegerText}>{row[d] ?? '—'}</Text>
-                </View>
-              ))}
+              <View style={[s.tabloHucre, s.tabloMalzemeHucre]}><Text style={s.tabloMalzemeText}>{row.malzeme}</Text></View>
+              {degerler.map(d => <View key={d} style={s.tabloHucre}><Text style={s.tabloDegerText}>{row[d] ?? '—'}</Text></View>)}
             </View>
           ))}
         </View>
       </ScrollView>
-
       <View style={s.olcuNot}>
         <Text style={s.olcuNotText}>
           Ölçüler standart Türk mutfak aletlerine göredir.{'\n'}
           Çay bardağı: 200ml · Su bardağı: 250ml · Yemek kaşığı: 15ml · Çay kaşığı: 5ml
         </Text>
       </View>
-
       <View style={{ height: 40 }} />
     </ScrollView>
   );
 }
 
-// ─── ANA UYGULAMA ─────────────────────────────────────────────────────────────
-
 export default function App() {
   const [ekran, setEkran] = useState('ana');
   const [secilenTarif, setSecilenTarif] = useState(null);
-
   const tarifAc = (t) => { setSecilenTarif(t); setEkran('tarif'); };
-  const olcuAc = () => setEkran('olcu');
-  const geri = () => setEkran('ana');
-
   return (
     <SafeAreaView style={s.root}>
-      {ekran === 'ana' && <AnaSayfa onTarif={tarifAc} onOlcu={olcuAc} />}
-      {ekran === 'tarif' && <TarifEkrani tarif={secilenTarif} onGeri={geri} />}
-      {ekran === 'olcu' && <OlcuEkrani onGeri={geri} />}
+      {ekran === 'ana' && <AnaSayfa onTarif={tarifAc} onOlcu={() => setEkran('olcu')} />}
+      {ekran === 'tarif' && <TarifEkrani tarif={secilenTarif} onGeri={() => setEkran('ana')} />}
+      {ekran === 'olcu' && <OlcuEkrani onGeri={() => setEkran('ana')} />}
     </SafeAreaView>
   );
 }
 
-// ─── STİLLER ─────────────────────────────────────────────────────────────────
-
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
   scroll: { flex: 1, backgroundColor: C.bg },
-
-  // Header
   header: { paddingHorizontal: 24, paddingTop: 48, paddingBottom: 32 },
   logo: { fontSize: 42, fontWeight: '300', color: C.text, letterSpacing: 8, fontStyle: 'italic' },
   logoAlt: { fontSize: 12, color: C.accentDim, letterSpacing: 3, marginTop: 4, textTransform: 'uppercase' },
-
   bolumBaslik: { fontSize: 11, color: C.accentDim, letterSpacing: 4, textTransform: 'uppercase', paddingHorizontal: 24, marginBottom: 16 },
-
-  // Featured card
   featuredCard: { marginHorizontal: 24, height: 280, borderRadius: 16, overflow: 'hidden', marginBottom: 40 },
   featuredImg: { ...StyleSheet.absoluteFillObject, width: '100%', height: '100%' },
   featuredOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.5)' },
@@ -363,8 +305,6 @@ const s = StyleSheet.create({
   featuredMutfak: { fontSize: 11, color: C.accent, letterSpacing: 3, textTransform: 'uppercase', marginBottom: 6 },
   featuredIsim: { fontSize: 26, fontWeight: '300', color: C.text, letterSpacing: 1, marginBottom: 8, fontStyle: 'italic' },
   featuredMeta: { fontSize: 13, color: 'rgba(255,255,255,0.6)' },
-
-  // Tarif listesi
   tarifCard: { flexDirection: 'row', alignItems: 'center', marginHorizontal: 24, marginBottom: 16, backgroundColor: C.bg2, borderRadius: 12, overflow: 'hidden', borderWidth: 1, borderColor: C.border },
   tarifImg: { width: 80, height: 80 },
   tarifBilgi: { flex: 1, paddingHorizontal: 16, paddingVertical: 12 },
@@ -372,14 +312,10 @@ const s = StyleSheet.create({
   tarifIsim: { fontSize: 16, fontWeight: '400', color: C.text, fontStyle: 'italic', marginBottom: 4 },
   tarifMeta: { fontSize: 12, color: C.textMuted },
   tarifOk: { fontSize: 22, color: C.textDim, paddingRight: 16 },
-
-  // Ölçü banner
   olcuBanner: { marginHorizontal: 24, marginTop: 8, padding: 20, backgroundColor: C.bg3, borderRadius: 12, borderWidth: 1, borderColor: C.accentDim, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   olcuBaslik: { fontSize: 15, color: C.accent, fontWeight: '400', marginBottom: 4 },
   olcuAlt: { fontSize: 12, color: C.textMuted },
   olcuOk: { fontSize: 24, color: C.accentDim },
-
-  // Tarif detay
   tarifDetayGorsel: { height: 320, position: 'relative' },
   tarifDetayOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.55)' },
   geriBtn: { position: 'absolute', top: 50, left: 20, padding: 8 },
@@ -388,42 +324,28 @@ const s = StyleSheet.create({
   tarifDetayMutfak: { fontSize: 11, color: C.accent, letterSpacing: 3, textTransform: 'uppercase', marginBottom: 6 },
   tarifDetayIsim: { fontSize: 30, fontWeight: '300', color: C.text, fontStyle: 'italic', marginBottom: 6 },
   tarifDetayMeta: { fontSize: 13, color: 'rgba(255,255,255,0.6)' },
-
-  // Besin
   besinRow: { flexDirection: 'row', marginHorizontal: 24, marginTop: 20, marginBottom: 8, gap: 8 },
   besinKutu: { flex: 1, backgroundColor: C.bg2, borderRadius: 10, padding: 12, alignItems: 'center', borderWidth: 1, borderColor: C.border },
   besinDeger: { fontSize: 20, fontWeight: '300', color: C.text },
   besinBirim: { fontSize: 10, color: C.accentDim, marginTop: 1 },
   besinEtiket: { fontSize: 10, color: C.textMuted, marginTop: 4, textTransform: 'uppercase', letterSpacing: 1 },
-
-  // Tabs
   tabRow: { flexDirection: 'row', marginHorizontal: 24, marginTop: 20, marginBottom: 4, gap: 4 },
   tab: { paddingVertical: 8, paddingHorizontal: 14, borderRadius: 20, borderWidth: 1, borderColor: C.border },
   tabAktif: { backgroundColor: C.accent, borderColor: C.accent },
   tabText: { fontSize: 12, color: C.textMuted, textTransform: 'lowercase' },
   tabTextAktif: { color: C.bg, fontWeight: '500' },
-
-  // Tab içerik
   tabIcerik: { paddingHorizontal: 24, paddingTop: 20 },
   hikayeMetin: { fontSize: 16, color: C.text, lineHeight: 28, fontStyle: 'italic', fontWeight: '300' },
-
-  // Malzemeler
   malzemeRow: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: C.border },
-  malzemeIsim: { fontSize: 15, color: C.text, fontWeight: '300' },
+  malzemeIsim: { fontSize: 15, color: C.text, fontWeight: '300', flex: 1, marginRight: 12 },
   malzemeMiktar: { fontSize: 15, color: C.accent },
-
-  // Adımlar
   adimRow: { flexDirection: 'row', marginBottom: 20, gap: 16 },
   adimNumara: { width: 28, height: 28, borderRadius: 14, borderWidth: 1, borderColor: C.accentDim, alignItems: 'center', justifyContent: 'center', marginTop: 2, flexShrink: 0 },
   adimNumaraText: { fontSize: 12, color: C.accent },
   adimMetin: { flex: 1, fontSize: 15, color: C.text, lineHeight: 24, fontWeight: '300' },
-
-  // Teknik
   teknikKutu: { backgroundColor: C.bg2, borderRadius: 12, padding: 20, borderLeftWidth: 2, borderLeftColor: C.accent },
   teknikBaslik: { fontSize: 16, color: C.accent, fontWeight: '500', marginBottom: 12, fontStyle: 'italic' },
   teknikMetin: { fontSize: 15, color: C.text, lineHeight: 26, fontWeight: '300' },
-
-  // Ölçü tablosu
   olcuHeader: { paddingHorizontal: 24, paddingTop: 50, paddingBottom: 24 },
   olcuBaslikBuyuk: { fontSize: 26, fontWeight: '300', color: C.text, fontStyle: 'italic', marginBottom: 8 },
   olcuAciklama: { fontSize: 13, color: C.textMuted },
