@@ -11,7 +11,7 @@ export const TARIFLER = [
     mutfak: 'Osmanlı',
     sure: '75 dk',
     zorluk: 'Orta',          // Kolay / Orta / İleri
-    gorsel: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=800&q=80',
+    gorsel: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=800&q=80',
     hikaye: 'Yıl 1869. Mısır Hidivi\'nin daveti üzerine İstanbul\'a gelen Fransız İmparatoriçe Eugénie, Dolmabahçe Sarayı\'nda Sultan Abdülaziz\'in sofrasına oturur. O gece sunulan kuzu yahnili patlıcan püresi İmparatoriçe\'yi öyle büyüler ki tarifi ısrarla ister. Saray aşçısı tarifi vermez — saray sırrıdır. Yemeğin adı da o geceden kalır: Hünkar Beğendi. Hükümdarın beğendiği. Bir imparatoriçeyi hayran bırakan, bir sultanın sofrasından dünya mutfağına açılan köprü.',
     malzemeler: [
       { isim: 'Kuzu but (küp doğranmış)', miktar: 800, birim: 'g' },
