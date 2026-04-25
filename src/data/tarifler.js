@@ -7,7 +7,7 @@
 export const TARIFLER = [
   {
     id: 1,
-    isim: 'Hünkar Beğendi',
+    isim: 'Hünkar XBeğendi',
     mutfak: 'Osmanlı',
     sure: '75 dk',
     zorluk: 'Orta',          // Kolay / Orta / İleri
