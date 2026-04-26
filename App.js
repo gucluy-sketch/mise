@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { SafeAreaView, ActivityIndicator } from 'react-native';
+import * as Linking from 'expo-linking';
 import { C } from './src/theme';
 import { supabase } from './src/supabase';
 import { getTarifler, getTemelBilgiler, getTarih, getMalzemeler } from './src/api';
@@ -30,6 +31,25 @@ export default function App() {
   const [tarih, setTarih] = useState([]);
   const [malzemeler, setMalzemeler] = useState([]);
 
+  // Deep link dinle
+  useEffect(() => {
+    const handleURL = async ({ url }) => {
+      if (url && url.includes('access_token')) {
+        const params = new URLSearchParams(url.split('#')[1]);
+        const accessToken = params.get('access_token');
+        const refreshToken = params.get('refresh_token');
+        if (accessToken && refreshToken) {
+          await supabase.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
+        }
+      }
+    };
+
+    Linking.getInitialURL().then(url => { if (url) handleURL({ url }); });
+    const sub = Linking.addEventListener('url', handleURL);
+    return () => sub.remove();
+  }, []);
+
+  // Auth durumunu dinle
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setKullanici(session?.user ?? null);
@@ -41,6 +61,7 @@ export default function App() {
     return () => subscription.unsubscribe();
   }, []);
 
+  // Veri yükle
   useEffect(() => {
     const veriYukle = async () => {
       const [t, tb, ta, m] = await Promise.all([
