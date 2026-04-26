@@ -1,80 +1,109 @@
-import { useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { C } from '../theme';
+import { getTarifDetay } from '../api';
 
 export default function TarifDetay({ tarif, onGeri }) {
   const [aktifTab, setAktifTab] = useState('hikaye');
+  const [detay, setDetay] = useState(null);
+  const [yukleniyor, setYukleniyor] = useState(true);
+
+  useEffect(() => {
+    const yukle = async () => {
+      const data = await getTarifDetay(tarif.id);
+      setDetay(data);
+      setYukleniyor(false);
+    };
+    yukle();
+  }, [tarif.id]);
+
+  if (yukleniyor) {
+    return (
+      <View style={{ flex: 1, backgroundColor: C.bg, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator color={C.accent} size="large" />
+      </View>
+    );
+  }
+
+  const t = detay || tarif;
+  const malzemeler = t.malzemeler || [];
+  const adimlar = t.adimlar || [];
 
   return (
     <ScrollView style={s.scroll} showsVerticalScrollIndicator={false}>
-
-      {/* Görsel + başlık */}
       <View style={s.gorsel}>
-        <Image source={{ uri: tarif.gorsel }} style={StyleSheet.absoluteFill} />
+        <Image source={{ uri: t.gorsel }} style={StyleSheet.absoluteFill} />
         <View style={s.overlay} />
         <TouchableOpacity style={s.geri} onPress={onGeri}>
           <Text style={s.geriText}>← geri</Text>
         </TouchableOpacity>
         <View style={s.baslik}>
-          <Text style={s.mutfak}>{tarif.mutfak}</Text>
-          <Text style={s.isim}>{tarif.isim}</Text>
-          <Text style={s.meta}>{tarif.sure} · {tarif.zorluk}</Text>
+          <Text style={s.mutfak}>{t.mutfak}</Text>
+          <Text style={s.isim}>{t.isim}</Text>
+          <Text style={s.meta}>{t.sure} · {t.zorluk}</Text>
         </View>
       </View>
 
-      {/* Besin değerleri */}
       <View style={s.besinRow}>
         {[
-          ['kalori', tarif.besin.kalori, 'kcal'],
-          ['protein', tarif.besin.protein, 'g'],
-          ['karb', tarif.besin.karbonhidrat, 'g'],
-          ['yağ', tarif.besin.yag, 'g'],
+          ['kalori', t.besin?.kalori || t.kalori, 'kcal'],
+          ['protein', t.besin?.protein || t.protein, 'g'],
+          ['karb', t.besin?.karbonhidrat || t.karbonhidrat, 'g'],
+          ['yağ', t.besin?.yag || t.yag, 'g'],
         ].map(([etiket, deger, birim]) => (
           <View key={etiket} style={s.besinKutu}>
-            <Text style={s.besinDeger}>{deger}</Text>
+            <Text style={s.besinDeger}>{deger ?? '—'}</Text>
             <Text style={s.besinBirim}>{birim}</Text>
             <Text style={s.besinEtiket}>{etiket}</Text>
           </View>
         ))}
       </View>
 
-      {/* Sekmeler */}
       <View style={s.tabRow}>
-        {['hikaye', 'malzemeler', 'yapılış', 'teknik'].map(t => (
-          <TouchableOpacity key={t} style={[s.tab, aktifTab === t && s.tabAktif]} onPress={() => setAktifTab(t)}>
-            <Text style={[s.tabText, aktifTab === t && s.tabTextAktif]}>{t}</Text>
+        {['hikaye', 'malzemeler', 'yapılış', 'teknik'].map(tab => (
+          <TouchableOpacity key={tab} style={[s.tab, aktifTab === tab && s.tabAktif]} onPress={() => setAktifTab(tab)}>
+            <Text style={[s.tabText, aktifTab === tab && s.tabTextAktif]}>{tab}</Text>
           </TouchableOpacity>
         ))}
       </View>
 
-      {/* Sekme içerikleri */}
       <View style={s.icerik}>
-
         {aktifTab === 'hikaye' && (
-          <Text style={s.hikaye}>{tarif.hikaye}</Text>
+          <Text style={s.hikaye}>{t.hikaye}</Text>
         )}
 
-        {aktifTab === 'malzemeler' && tarif.malzemeler.map((m, i) => (
-          <View key={i} style={s.malzemeRow}>
-            <Text style={s.malzemeIsim}>{m.isim}</Text>
-            <Text style={s.malzemeMiktar}>{m.miktar > 0 ? `${m.miktar} ${m.birim}` : m.birim}</Text>
+        {aktifTab === 'malzemeler' && (
+          <View>
+            {malzemeler.length === 0 ? (
+              <Text style={s.bosMetin}>Malzeme bilgisi henüz eklenmedi.</Text>
+            ) : malzemeler.map((m, i) => (
+              <View key={i} style={s.malzemeRow}>
+                <Text style={s.malzemeIsim}>{m.malzeme_isim || m.isim}</Text>
+                <Text style={s.malzemeMiktar}>{m.miktar > 0 ? `${m.miktar} ${m.birim}` : m.birim}</Text>
+              </View>
+            ))}
           </View>
-        ))}
+        )}
 
-        {aktifTab === 'yapılış' && tarif.adimlar.map((a, i) => (
-          <View key={i} style={s.adimRow}>
-            <View style={s.adimNo}><Text style={s.adimNoText}>{i + 1}</Text></View>
-            <Text style={s.adimMetin}>{a}</Text>
+        {aktifTab === 'yapılış' && (
+          <View>
+            {adimlar.length === 0 ? (
+              <Text style={s.bosMetin}>Yapılış adımları henüz eklenmedi.</Text>
+            ) : adimlar.map((a, i) => (
+              <View key={i} style={s.adimRow}>
+                <View style={s.adimNo}><Text style={s.adimNoText}>{i + 1}</Text></View>
+                <Text style={s.adimMetin}>{typeof a === 'string' ? a : a.aciklama}</Text>
+              </View>
+            ))}
           </View>
-        ))}
+        )}
 
         {aktifTab === 'teknik' && (
           <View style={s.teknikKutu}>
-            <Text style={s.teknikBaslik}>{tarif.teknik_isim}</Text>
-            <Text style={s.teknikMetin}>{tarif.teknik}</Text>
+            <Text style={s.teknikBaslik}>{t.teknik_isim}</Text>
+            <Text style={s.teknikMetin}>{t.teknik}</Text>
           </View>
         )}
-
       </View>
 
       <View style={{ height: 40 }} />
@@ -104,6 +133,7 @@ const s = StyleSheet.create({
   tabTextAktif: { color: C.bg, fontWeight: '500' },
   icerik: { paddingHorizontal: 24, paddingTop: 20 },
   hikaye: { fontSize: 16, color: C.text, lineHeight: 28, fontStyle: 'italic', fontWeight: '300' },
+  bosMetin: { fontSize: 14, color: C.textMuted, fontStyle: 'italic' },
   malzemeRow: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: C.border },
   malzemeIsim: { fontSize: 15, color: C.text, fontWeight: '300', flex: 1, marginRight: 12 },
   malzemeMiktar: { fontSize: 15, color: C.accent },
