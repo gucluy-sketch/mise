@@ -1,39 +1,51 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, Platform } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
-import * as Google from 'expo-auth-session/providers/google';
-import * as AuthSession from 'expo-auth-session';
 import { C } from '../theme';
 import { supabase } from '../supabase';
-
-WebBrowser.maybeCompleteAuthSession();
 
 export default function Giris({ onKayitGec, onGirisBasarili }) {
   const [email, setEmail] = useState('');
   const [sifre, setSifre] = useState('');
   const [yukleniyor, setYukleniyor] = useState(false);
+  const [googleYukleniyor, setGoogleYukleniyor] = useState(false);
   const [hata, setHata] = useState('');
 
-  const redirectUri = AuthSession.makeRedirectUri({
-    scheme: 'mise',
-    path: 'auth/callback',
-  });
-
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    androidClientId: '481466244478-f8lb2rrnmb4gfcndd30de3248fa0odlj.apps.googleusercontent.com',
-    webClientId: '481466244478-cne4lj4hmoequ2v3cp0sv1kshrp0iq1u.apps.googleusercontent.com',
-    redirectUri,
-  });
-
-  useEffect(() => {
-    if (response?.type === 'success') {
-      const { id_token } = response.params;
-      supabase.auth.signInWithIdToken({
+  const googleIleGiris = async () => {
+    setGoogleYukleniyor(true);
+    setHata('');
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
-        token: id_token,
+        options: {
+          redirectTo: Platform.OS === 'web'
+            ? 'https://mise-app-wheat.vercel.app'
+            : 'mise://auth/callback',
+          skipBrowserRedirect: true,
+        },
       });
+      if (error) throw error;
+      const result = await WebBrowser.openAuthSessionAsync(
+        data.url,
+        'mise://auth/callback'
+      );
+      if (result.type === 'success') {
+        const url = result.url;
+        const params = new URLSearchParams(url.split('#')[1] || url.split('?')[1]);
+        const accessToken = params.get('access_token');
+        const refreshToken = params.get('refresh_token');
+        if (accessToken && refreshToken) {
+          await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken,
+          });
+        }
+      }
+    } catch (e) {
+      setHata('Google ile giriş başarısız.');
     }
-  }, [response]);
+    setGoogleYukleniyor(false);
+  };
 
   const girisYap = async () => {
     if (!email || !sifre) { setHata('E-posta ve şifre gerekli.'); return; }
@@ -53,13 +65,14 @@ export default function Giris({ onKayitGec, onGirisBasarili }) {
         <View style={s.form}>
           <Text style={s.baslik}>Giriş Yap</Text>
 
-          <TouchableOpacity
-            style={s.googleBtn}
-            onPress={() => promptAsync()}
-            disabled={!request}
-          >
-            <Text style={s.googleIkon}>G</Text>
-            <Text style={s.googleText}>Google ile Giriş Yap</Text>
+          <TouchableOpacity style={s.googleBtn} onPress={googleIleGiris} disabled={googleYukleniyor}>
+            {googleYukleniyor
+              ? <ActivityIndicator color={C.text} size="small" />
+              : <>
+                  <Text style={s.googleIkon}>G</Text>
+                  <Text style={s.googleText}>Google ile Giriş Yap</Text>
+                </>
+            }
           </TouchableOpacity>
 
           <View style={s.ayracRow}>
