@@ -22,11 +22,12 @@ export default function Giris({ onKayitGec, onGirisBasarili }) {
   const googleIleGiris = async () => {
     setGoogleYukleniyor(true);
     setHata('');
+    const redirectTo = Platform.OS === 'web'
+      ? 'https://mise-app-wheat.vercel.app'
+      : 'mise://auth/callback';
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: {
-        redirectTo: 'https://mise-app-wheat.vercel.app',
-      },
+      options: { redirectTo },
     });
     if (error) { setHata('Google ile giriş başarısız.'); setGoogleYukleniyor(false); }
   };
@@ -40,7 +41,6 @@ export default function Giris({ onKayitGec, onGirisBasarili }) {
         <View style={s.form}>
           <Text style={s.baslik}>Giriş Yap</Text>
 
-          {/* Google butonu */}
           <TouchableOpacity style={s.googleBtn} onPress={googleIleGiris} disabled={googleYukleniyor}>
             {googleYukleniyor
               ? <ActivityIndicator color={C.text} size="small" />
