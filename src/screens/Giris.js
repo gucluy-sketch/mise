@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, Platform } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
+import * as AuthSession from 'expo-auth-session';
 import { C } from '../theme';
 import { supabase } from '../supabase';
 
@@ -13,9 +14,15 @@ export default function Giris({ onKayitGec, onGirisBasarili }) {
   const [yukleniyor, setYukleniyor] = useState(false);
   const [hata, setHata] = useState('');
 
+  const redirectUri = AuthSession.makeRedirectUri({
+    scheme: 'mise',
+    path: 'auth/callback',
+  });
+
   const [request, response, promptAsync] = Google.useAuthRequest({
     androidClientId: '481466244478-f8lb2rrnmb4gfcndd30de3248fa0odlj.apps.googleusercontent.com',
     webClientId: '481466244478-cne4lj4hmoequ2v3cp0sv1kshrp0iq1u.apps.googleusercontent.com',
+    redirectUri,
   });
 
   useEffect(() => {
