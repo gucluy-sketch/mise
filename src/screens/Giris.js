@@ -4,6 +4,8 @@ import * as WebBrowser from 'expo-web-browser';
 import { C } from '../theme';
 import { supabase } from '../supabase';
 
+WebBrowser.maybeCompleteAuthSession();
+
 export default function Giris({ onKayitGec, onGirisBasarili }) {
   const [email, setEmail] = useState('');
   const [sifre, setSifre] = useState('');
@@ -18,20 +20,19 @@ export default function Giris({ onKayitGec, onGirisBasarili }) {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: Platform.OS === 'web'
-            ? 'https://mise-app-wheat.vercel.app'
-            : 'mise://auth/callback',
+          redirectTo: 'https://mise-app-wheat.vercel.app',
           skipBrowserRedirect: true,
         },
       });
       if (error) throw error;
       const result = await WebBrowser.openAuthSessionAsync(
         data.url,
-        'mise://auth/callback'
+        'https://mise-app-wheat.vercel.app'
       );
       if (result.type === 'success') {
         const url = result.url;
-        const params = new URLSearchParams(url.split('#')[1] || url.split('?')[1]);
+        const hashPart = url.split('#')[1] || url.split('?')[1] || '';
+        const params = new URLSearchParams(hashPart);
         const accessToken = params.get('access_token');
         const refreshToken = params.get('refresh_token');
         if (accessToken && refreshToken) {
