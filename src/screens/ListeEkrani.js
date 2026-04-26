@@ -8,10 +8,31 @@ export default function ListeEkrani({ baslik, veriler, onItem, onGeri }) {
   const [seciliTaglar, setSeciliTaglar] = useState({});
   const [filtrelenmis, setFiltrelenmis] = useState(veriler);
 
-  useEffect(() => {
+useEffect(() => {
     const yukle = async () => {
-      const { data } = await supabase.from('taglar').select('*').order('id');
-      if (data) setTaglar(data);
+      // Hangi tag'lerin içeriği var?
+      const { data: baglantilar } = await supabase
+        .from('icerik_taglar')
+        .select('tag_id')
+        .eq('icerik_turu', 'tarif');
+
+      if (!baglantilar) return;
+
+      // Her tag'in kaç içeriği var say
+      const sayac = {};
+      baglantilar.forEach(b => {
+        sayac[b.tag_id] = (sayac[b.tag_id] || 0) + 1;
+      });
+
+      const { data } = await supabase.from('taglar').select('*');
+      if (!data) return;
+
+      // Sadece içeriği olan tagları al, sayıya göre sırala
+      const aktifTaglar = data
+        .filter(t => sayac[t.id] > 0)
+        .sort((a, b) => (sayac[b.id] || 0) - (sayac[a.id] || 0));
+
+      setTaglar(aktifTaglar);
     };
     yukle();
   }, []);
