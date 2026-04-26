@@ -25,7 +25,7 @@ export default function Giris({ onKayitGec, onGirisBasarili }) {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.origin,
+        redirectTo: 'https://mise-app-wheat.vercel.app',
       },
     });
     if (error) { setHata('Google ile giriş başarısız.'); setGoogleYukleniyor(false); }
