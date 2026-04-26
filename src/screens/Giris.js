@@ -6,7 +6,7 @@ import { supabase } from '../supabase';
 
 WebBrowser.maybeCompleteAuthSession();
 
-export default function Giris({ onKayitGec, onGirisBasarili }) {
+export default function Giris({ navigation }) {
   const [email, setEmail] = useState('');
   const [sifre, setSifre] = useState('');
   const [yukleniyor, setYukleniyor] = useState(false);
@@ -54,7 +54,6 @@ export default function Giris({ onKayitGec, onGirisBasarili }) {
     setHata('');
     const { error } = await supabase.auth.signInWithPassword({ email, password: sifre });
     if (error) { setHata('E-posta veya şifre hatalı.'); setYukleniyor(false); return; }
-    onGirisBasarili();
   };
 
   return (
@@ -109,7 +108,7 @@ export default function Giris({ onKayitGec, onGirisBasarili }) {
             }
           </TouchableOpacity>
 
-          <TouchableOpacity style={s.linkBtn} onPress={onKayitGec}>
+          <TouchableOpacity style={s.linkBtn} onPress={() => navigation.navigate('Kayit')}>
             <Text style={s.linkText}>Hesabın yok mu? <Text style={s.linkVurgu}>Kayıt ol</Text></Text>
           </TouchableOpacity>
         </View>
