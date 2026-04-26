@@ -50,7 +50,7 @@ export default function ListeEkrani({ baslik, veriler, onItem, onGeri }) {
   ];
 
   return (
-    <View style={{ flex: 1, backgroundColor: C.bg }}>
+    <ScrollView style={{ flex: 1, backgroundColor: C.bg }} contentContainerStyle={{ flexGrow: 1 }}>
       <View style={s.header}>
         <TouchableOpacity onPress={onGeri}>
           <Text style={s.geri}>← geri</Text>
@@ -82,27 +82,26 @@ export default function ListeEkrani({ baslik, veriler, onItem, onGeri }) {
         );
       })}
 
-      <ScrollView style={s.scroll} showsVerticalScrollIndicator={false}>
-        {filtrelenmis.length === 0 ? (
-          <View style={s.bosKutu}>
-            <Text style={s.bosMetin}>Bu filtreye uygun sonuç bulunamadı.</Text>
+      {filtrelenmis.length === 0 ? (
+        <View style={s.bosKutu}>
+          <Text style={s.bosMetin}>Bu filtreye uygun sonuç bulunamadı.</Text>
+        </View>
+      ) : filtrelenmis.map((item) => (
+        <TouchableOpacity key={item.id} style={s.kart} onPress={() => onItem(item)}>
+          <Image source={{ uri: item.gorsel }} style={s.kartImg} />
+          <View style={s.kartBilgi}>
+            <Text style={s.kartKategori}>{item.kategori || item.mutfak}</Text>
+            <Text style={s.kartIsim}>{item.baslik || item.isim}</Text>
+            <Text style={s.kartMeta}>
+              {item.sure_okuma ? `${item.sure_okuma} okuma` : `${item.sure} · ${item.zorluk}`}
+            </Text>
           </View>
-        ) : filtrelenmis.map((item) => (
-          <TouchableOpacity key={item.id} style={s.kart} onPress={() => onItem(item)}>
-            <Image source={{ uri: item.gorsel }} style={s.kartImg} />
-            <View style={s.kartBilgi}>
-              <Text style={s.kartKategori}>{item.kategori || item.mutfak}</Text>
-              <Text style={s.kartIsim}>{item.baslik || item.isim}</Text>
-              <Text style={s.kartMeta}>
-                {item.sure_okuma ? `${item.sure_okuma} okuma` : `${item.sure} · ${item.zorluk}`}
-              </Text>
-            </View>
-            <Text style={s.ok}>›</Text>
-          </TouchableOpacity>
-        ))}
-        <View style={{ height: 40 }} />
-      </ScrollView>
-    </View>
+          <Text style={s.ok}>›</Text>
+        </TouchableOpacity>
+      ))}
+
+      <View style={{ height: 40 }} />
+    </ScrollView>
   );
 }
 
@@ -118,7 +117,6 @@ const s = StyleSheet.create({
   filtreBtnAktif: { backgroundColor: C.accent, borderColor: C.accent },
   filtreBtnText: { fontSize: 12, color: C.textMuted },
   filtreBtnTextAktif: { color: C.bg, fontWeight: '500' },
-  scroll: { flex: 1, backgroundColor: C.bg },
   kart: { flexDirection: 'row', alignItems: 'center', marginHorizontal: 24, marginBottom: 16, backgroundColor: C.bg2, borderRadius: 12, overflow: 'hidden', borderWidth: 1, borderColor: C.border },
   kartImg: { width: 90, height: 90 },
   kartBilgi: { flex: 1, paddingHorizontal: 16, paddingVertical: 12 },

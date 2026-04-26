@@ -37,6 +37,11 @@ const linking = {
   },
 };
 
+const screenOptions = {
+  headerShown: false,
+  cardStyle: { flex: 1, overflow: 'scroll' },
+};
+
 export default function App() {
   const [kullanici, setKullanici] = useState(null);
   const [authYukleniyor, setAuthYukleniyor] = useState(true);
@@ -100,7 +105,7 @@ export default function App() {
     return (
       <SafeAreaProvider>
         <NavigationContainer>
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Navigator screenOptions={screenOptions}>
             <Stack.Screen name="Giris">
               {props => <Giris {...props} />}
             </Stack.Screen>
@@ -116,7 +121,7 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <NavigationContainer linking={linking}>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Navigator screenOptions={screenOptions}>
           <Stack.Screen name="Ana">
             {props => (
               <AnaSayfa
