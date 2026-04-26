@@ -1,14 +1,32 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, Platform } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
+import * as Google from 'expo-auth-session/providers/google';
 import { C } from '../theme';
 import { supabase } from '../supabase';
+
+WebBrowser.maybeCompleteAuthSession();
 
 export default function Giris({ onKayitGec, onGirisBasarili }) {
   const [email, setEmail] = useState('');
   const [sifre, setSifre] = useState('');
   const [yukleniyor, setYukleniyor] = useState(false);
-  const [googleYukleniyor, setGoogleYukleniyor] = useState(false);
   const [hata, setHata] = useState('');
+
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    androidClientId: '481466244478-f8lb2rrnmb4gfcndd30de3248fa0odlj.apps.googleusercontent.com',
+    webClientId: '481466244478-cne4lj4hmoequ2v3cp0sv1kshrp0iq1u.apps.googleusercontent.com',
+  });
+
+  useEffect(() => {
+    if (response?.type === 'success') {
+      const { id_token } = response.params;
+      supabase.auth.signInWithIdToken({
+        provider: 'google',
+        token: id_token,
+      });
+    }
+  }, [response]);
 
   const girisYap = async () => {
     if (!email || !sifre) { setHata('E-posta ve şifre gerekli.'); return; }
@@ -17,19 +35,6 @@ export default function Giris({ onKayitGec, onGirisBasarili }) {
     const { error } = await supabase.auth.signInWithPassword({ email, password: sifre });
     if (error) { setHata('E-posta veya şifre hatalı.'); setYukleniyor(false); return; }
     onGirisBasarili();
-  };
-
-  const googleIleGiris = async () => {
-    setGoogleYukleniyor(true);
-    setHata('');
-    const redirectTo = Platform.OS === 'web'
-      ? 'https://mise-app-wheat.vercel.app'
-      : 'mise://auth/callback';
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: { redirectTo },
-    });
-    if (error) { setHata('Google ile giriş başarısız.'); setGoogleYukleniyor(false); }
   };
 
   return (
@@ -41,14 +46,13 @@ export default function Giris({ onKayitGec, onGirisBasarili }) {
         <View style={s.form}>
           <Text style={s.baslik}>Giriş Yap</Text>
 
-          <TouchableOpacity style={s.googleBtn} onPress={googleIleGiris} disabled={googleYukleniyor}>
-            {googleYukleniyor
-              ? <ActivityIndicator color={C.text} size="small" />
-              : <>
-                  <Text style={s.googleIkon}>G</Text>
-                  <Text style={s.googleText}>Google ile Giriş Yap</Text>
-                </>
-            }
+          <TouchableOpacity
+            style={s.googleBtn}
+            onPress={() => promptAsync()}
+            disabled={!request}
+          >
+            <Text style={s.googleIkon}>G</Text>
+            <Text style={s.googleText}>Google ile Giriş Yap</Text>
           </TouchableOpacity>
 
           <View style={s.ayracRow}>

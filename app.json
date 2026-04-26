@@ -2,7 +2,7 @@
   "expo": {
     "name": "mise",
     "slug": "mise-app",
-    "scheme":"mise",
+    "scheme": "mise",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -32,6 +32,9 @@
         "projectId": "a7043099-b8af-4559-9573-734f9731b41d"
       }
     },
-    "owner": "mise-app"
+    "owner": "mise-app",
+    "plugins": [
+      "expo-web-browser"
+    ]
   }
 }
