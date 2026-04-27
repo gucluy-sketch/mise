@@ -33,5 +33,5 @@ export default function RichText({ metin, style }) {
 
 const s = StyleSheet.create({
   metin: { fontSize: 16, color: C.text, lineHeight: 28, fontStyle: 'italic', fontWeight: '300' },
-  gorsel: { width: '100%', height: 240, borderRadius: 12, marginVertical: 16 },
+  gorsel: { width: '100%', aspectRatio: 16/9, borderRadius: 12, marginVertical: 16 },
 });
