@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { C } from '../theme';
 import { getTarifDetay } from '../api';
+import RichText from '../RichText';
 
 export default function TarifDetay({ tarif, onGeri }) {
   const [aktifTab, setAktifTab] = useState('hikaye');
@@ -59,17 +60,21 @@ export default function TarifDetay({ tarif, onGeri }) {
         ))}
       </View>
 
-      <View style={s.tabRow}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={s.tabScroll}>
         {['hikaye', 'malzemeler', 'yapılış', 'teknik'].map(tab => (
-          <TouchableOpacity key={tab} style={[s.tab, aktifTab === tab && s.tabAktif]} onPress={() => setAktifTab(tab)}>
+          <TouchableOpacity
+            key={tab}
+            style={[s.tab, aktifTab === tab && s.tabAktif]}
+            onPress={() => setAktifTab(tab)}
+          >
             <Text style={[s.tabText, aktifTab === tab && s.tabTextAktif]}>{tab}</Text>
           </TouchableOpacity>
         ))}
-      </View>
+      </ScrollView>
 
       <View style={s.icerik}>
         {aktifTab === 'hikaye' && (
-          <Text style={s.hikaye}>{t.hikaye}</Text>
+          <RichText metin={t.hikaye} />
         )}
 
         {aktifTab === 'malzemeler' && (
@@ -91,8 +96,15 @@ export default function TarifDetay({ tarif, onGeri }) {
               <Text style={s.bosMetin}>Yapılış adımları henüz eklenmedi.</Text>
             ) : adimlar.map((a, i) => (
               <View key={i} style={s.adimRow}>
-                <View style={s.adimNo}><Text style={s.adimNoText}>{i + 1}</Text></View>
-                <Text style={s.adimMetin}>{typeof a === 'string' ? a : a.aciklama}</Text>
+                <View style={s.adimNo}>
+                  <Text style={s.adimNoText}>{i + 1}</Text>
+                </View>
+                <View style={{ flex: 1 }}>
+                  <RichText
+                    metin={typeof a === 'string' ? a : a.aciklama}
+                    style={{ fontSize: 15, lineHeight: 24, fontStyle: 'normal' }}
+                  />
+                </View>
               </View>
             ))}
           </View>
@@ -101,7 +113,7 @@ export default function TarifDetay({ tarif, onGeri }) {
         {aktifTab === 'teknik' && (
           <View style={s.teknikKutu}>
             <Text style={s.teknikBaslik}>{t.teknik_isim}</Text>
-            <Text style={s.teknikMetin}>{t.teknik}</Text>
+            <RichText metin={t.teknik} style={{ fontSize: 15, lineHeight: 26, fontStyle: 'normal' }} />
           </View>
         )}
       </View>
@@ -126,13 +138,12 @@ const s = StyleSheet.create({
   besinDeger: { fontSize: 20, fontWeight: '300', color: C.text },
   besinBirim: { fontSize: 10, color: C.accentDim, marginTop: 1 },
   besinEtiket: { fontSize: 10, color: C.textMuted, marginTop: 4, textTransform: 'uppercase', letterSpacing: 1 },
-  tabRow: { flexDirection: 'row', marginHorizontal: 24, marginTop: 20, marginBottom: 4, gap: 4 },
-  tab: { paddingVertical: 8, paddingHorizontal: 14, borderRadius: 20, borderWidth: 1, borderColor: C.border },
+  tabScroll: { paddingLeft: 24, marginTop: 20, marginBottom: 4, flexGrow: 0 },
+  tab: { paddingVertical: 8, paddingHorizontal: 14, borderRadius: 20, borderWidth: 1, borderColor: C.border, marginRight: 8 },
   tabAktif: { backgroundColor: C.accent, borderColor: C.accent },
   tabText: { fontSize: 12, color: C.textMuted },
   tabTextAktif: { color: C.bg, fontWeight: '500' },
   icerik: { paddingHorizontal: 24, paddingTop: 20 },
-  hikaye: { fontSize: 16, color: C.text, lineHeight: 28, fontStyle: 'italic', fontWeight: '300' },
   bosMetin: { fontSize: 14, color: C.textMuted, fontStyle: 'italic' },
   malzemeRow: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: C.border },
   malzemeIsim: { fontSize: 15, color: C.text, fontWeight: '300', flex: 1, marginRight: 12 },
@@ -140,8 +151,6 @@ const s = StyleSheet.create({
   adimRow: { flexDirection: 'row', marginBottom: 20, gap: 16 },
   adimNo: { width: 28, height: 28, borderRadius: 14, borderWidth: 1, borderColor: C.accentDim, alignItems: 'center', justifyContent: 'center', marginTop: 2, flexShrink: 0 },
   adimNoText: { fontSize: 12, color: C.accent },
-  adimMetin: { flex: 1, fontSize: 15, color: C.text, lineHeight: 24, fontWeight: '300' },
   teknikKutu: { backgroundColor: C.bg2, borderRadius: 12, padding: 20, borderLeftWidth: 2, borderLeftColor: C.accent },
   teknikBaslik: { fontSize: 16, color: C.accent, fontWeight: '500', marginBottom: 12, fontStyle: 'italic' },
-  teknikMetin: { fontSize: 15, color: C.text, lineHeight: 26, fontWeight: '300' },
 });
